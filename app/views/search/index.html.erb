@@ -1,0 +1,15 @@
+<h1>Search</h1>
+
+<div data-controller="search">
+<input
+  type="text"
+  id="search-input"
+  placeholder="Search articles..."
+  autocomplete="off"
+  data-search-target="input"
+  data-action="input->search#trackTyping"/>
+
+  <button type="button" data-action="click->search#trackClick"> Search </button>
+</div>
+
+<div id="results"></div>
