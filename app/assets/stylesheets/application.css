@@ -32,3 +32,7 @@
 .dropdown-item:hover {
   background-color: #f0f0f0;
 }
+
+#top-searches li {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}

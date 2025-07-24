@@ -64,3 +64,4 @@ end
 
 gem "stimulus-rails", "~> 1.3"
 gem 'importmap-rails'
+gem 'pg', '~> 1.4'

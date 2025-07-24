@@ -1,15 +1,139 @@
-<h1>Search</h1>
+<style>
+  .search-container {
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 40px;
+    text-align: center;
+    background-color: #f9fafc;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  }
 
-<div data-controller="search">
-<input
-  type="text"
-  id="search-input"
-  placeholder="Search articles..."
-  autocomplete="off"
-  data-search-target="input"
-  data-action="input->search#trackTyping"/>
+  .search-container h1 {
+    color: #2376C2;
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
 
-  <button type="button" data-action="click->search#trackClick"> Search </button>
+  .search-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  .search-container input[type="text"] {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 1px solid #E5E7F0;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-right: 10px;
+  }
+
+  .search-container input[type="text"]:focus {
+    border-color: #2376C2;
+    box-shadow: 0 0 0 3px rgba(35, 118, 194, 0.2);
+  }
+
+  .search-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #2376C2;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .search-container button:hover {
+    background-color: #1f67ab;
+  }
+
+  .search-container h2 {
+    font-size: 20px;
+    color: #333;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+
+  .search-container ul {
+    padding-left: 0;
+    list-style: none;
+    text-align: left;
+  }
+
+  .search-container ul li {
+    background-color: #ffffff;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .search-container ul li:hover {
+    background-color: #f1f5f9;
+  }
+
+  #results {
+    margin-top: 40px;
+    text-align: left;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: calc(100% - 100px); /* match input's width */
+    background-color: #ffffff;
+    border: 1px solid #E5E7F0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    list-style: none;
+    margin-top: 4px;
+    padding: 0;
+    z-index: 1000;
+  }
+
+  .dropdown-menu li {
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .dropdown-menu li:hover {
+    background-color: #f1f5f9;
+  }
+</style>
+
+<div class="search-container" data-controller="search">
+  <h1>Search</h1>
+
+  <div class="search-row">
+    <input
+      type="text"
+      id="search-input"
+      placeholder="Search articles..."
+      autocomplete="off"
+      data-search-target="input"
+      onfocus="document.getElementById('dropdown').style.display = 'block';"
+      onblur="setTimeout(() => document.getElementById('dropdown').style.display = 'none', 150);" />
+
+    <button type="button" data-action="click->search#submitSearch">Search</button>
+
+    <ul id="dropdown" style="display: none;" class="dropdown-menu"></ul>
+  </div>
+
+  <h2>Top Searches 📈</h2>
+  <ul id="top-searches" data-search-target="topSearches"></ul>
 </div>
 
 <div id="results"></div>
