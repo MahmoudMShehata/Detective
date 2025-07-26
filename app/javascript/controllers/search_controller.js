@@ -5,24 +5,29 @@ export default class extends Controller {
   static targets = ["input", "topSearches"];
 
   connect() {
+    // Load initial top searches on page load
     this.loadTopSearches();
 
+    // Subscribe to TopSearchesChannel to get live updates
     this.subscription = consumer.subscriptions.create("TopSearchesChannel", {
       received: (data) => {
         this.animateUpdate(data.queries);
       }
     });
 
+    // Load recent queries when user interacts with the input field
     this.inputTarget.addEventListener("focus", () => this.loadRecentQueries());
     this.inputTarget.addEventListener("input", () => this.loadRecentQueries());
   }
 
   disconnect() {
+    // Clean up subscription when the controller is removed
     if (this.subscription) {
       consumer.subscriptions.remove(this.subscription);
     }
   }
 
+  // Handle search form submission
   submitSearch() {
     const query = this.inputTarget.value.trim();
     if (query.length < 3) return;
@@ -30,6 +35,7 @@ export default class extends Controller {
     this.sendQuery(query);
   }
 
+  // Send the search query to the server
   sendQuery(query) {
     fetch("/search_queries", {
       method: "POST",
@@ -41,6 +47,7 @@ export default class extends Controller {
     });
   }
 
+  // Fetch and display the top search queries
   loadTopSearches() {
     fetch("/search_queries/top")
       .then(response => response.json())
@@ -49,6 +56,7 @@ export default class extends Controller {
       });
   }
 
+  // Replace the displayed list of top searches
   animateUpdate(data) {
     const newList = document.createElement("ul");
     newList.style.listStyle = "none";
@@ -68,6 +76,7 @@ export default class extends Controller {
     oldList.replaceChildren(...newList.children);
   }
 
+  // Fetch and show recent searches by the user
   loadRecentQueries() {
     fetch("/search_queries/recent")
       .then(response => response.json())
